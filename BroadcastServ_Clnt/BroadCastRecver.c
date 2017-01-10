@@ -3,7 +3,6 @@
 #include<string.h>
 #include<WinSock2.h>
 
-
 #define BUF_SIZE 1024
 
 #pragma comment(lib,"ws2_32.lib")
