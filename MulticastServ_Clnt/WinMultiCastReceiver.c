@@ -30,7 +30,6 @@ int main(int argc,char* argv[])
 		ErrorHandling("socket() error");
 
 	
-
 	//prepare address
 	memset(&addr,0,sizeof(addr));
 	addr.sin_family=AF_INET;
