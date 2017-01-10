@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IOCPServ_Clnt", "IOCPServ_Clnt\IOCPServ_Clnt.vcxproj", "{195B843B-38C7-4E39-94BD-BC6DFBBB8F48}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WSASocketCompletionRoutineClnt", "WSASocketCompletionRoutineClnt\WSASocketCompletionRoutineClnt.vcxproj", "{D0073895-428C-4F1C-8D0B-EC8387CCB54B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{195B843B-38C7-4E39-94BD-BC6DFBBB8F48}.Debug|Win32.ActiveCfg = Debug|Win32
+		{195B843B-38C7-4E39-94BD-BC6DFBBB8F48}.Debug|Win32.Build.0 = Debug|Win32
+		{195B843B-38C7-4E39-94BD-BC6DFBBB8F48}.Release|Win32.ActiveCfg = Release|Win32
+		{195B843B-38C7-4E39-94BD-BC6DFBBB8F48}.Release|Win32.Build.0 = Release|Win32
+		{D0073895-428C-4F1C-8D0B-EC8387CCB54B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D0073895-428C-4F1C-8D0B-EC8387CCB54B}.Debug|Win32.Build.0 = Debug|Win32
+		{D0073895-428C-4F1C-8D0B-EC8387CCB54B}.Release|Win32.ActiveCfg = Release|Win32
+		{D0073895-428C-4F1C-8D0B-EC8387CCB54B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
