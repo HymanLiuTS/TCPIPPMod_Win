@@ -9,34 +9,39 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
-#define BUF_SIZE 30
+#define BUF_SIZE 1024
 
-void ErrorHandler(const char* message);
-void CALLBACK CompletionRoutine(DWORD dwError,DWORD szRecvBytes,LPWSAOVERLAPPED lpOverlapped,DWORD flags);
 
-char buf[BUF_SIZE];
-DWORD recvBytes = 0;
-WSABUF wsaBuf;
+void CALLBACK ReadCompletionRoutine(DWORD dwError,DWORD szRecvBytes,LPWSAOVERLAPPED lpOverlapped,DWORD flags);
+void CALLBACK WriteCompletionRoutine(DWORD dwError,DWORD szSendBytes,LPWSAOVERLAPPED lpOverlapped,DWORD flags);
+void ErrorHandler(char* message);
+
+typedef struct  
+{
+	SOCKET hClntSock;
+	char buf[BUF_SIZE];
+	WSABUF wsaBuf;
+}IO_DATA,*LPIO_DATA;
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	SOCKET servSock,clntSock;
 	SOCKADDR_IN servAddr,clntAddr;
 	int clntAddrSz;
-	
-	WSAOVERLAPPED overLapped;
-	HANDLE hEvent;
-	
-	DWORD ret,flags=0;
 
-	WSADATA wsaData;
+	unsigned long mode=1;
+
+	WSAOVERLAPPED ovLap;
+	IO_DATA ioData;
+	DWORD recvBytes,flagInfo;
+	HANDLE hEvent;
+
+	WSAData wsaData;
 	WSAStartup(MAKEWORD(2,2),&wsaData);
 
-
-
-	//创建支持IO复用的套接字
 	servSock=WSASocket(AF_INET,SOCK_STREAM,0,NULL,0,WSA_FLAG_OVERLAPPED);
-	if(servSock==INVALID_SOCKET)
-		ErrorHandler("WSASocket Error");
+	ioctlsocket(servSock,FIONBIO,&mode);
 
 	memset(&servAddr,0,sizeof(servAddr));
 	servAddr.sin_family=AF_INET;
@@ -49,47 +54,66 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(listen(servSock,5)==SOCKET_ERROR)
 		ErrorHandler("listen error");
 
-	clntAddrSz=sizeof(clntAddr);
-	clntSock=accept(servSock,(SOCKADDR*)&clntAddr,&clntAddrSz);
-
-	memset(&overLapped,0,sizeof(overLapped));
-	wsaBuf.buf=buf;
-	wsaBuf.len=BUF_SIZE;
-	hEvent=WSACreateEvent();
-	overLapped.hEvent=hEvent;
-
-	if(WSARecv(clntSock,&wsaBuf,1,&recvBytes,&flags,&overLapped,CompletionRoutine)==SOCKET_ERROR)
+	while(1)
 	{
-		if(WSAGetLastError()==WSA_IO_PENDING)
-			puts("background recieve data");
-	}
-	ret=WSAWaitForMultipleEvents(1,&hEvent,false,WSA_INFINITE,true);
-	if(ret==WAIT_IO_COMPLETION)
-		puts("Overlapped I/O Compeleted");
-	else
-		ErrorHandler("WSARecv Error");
-
-	WSACloseEvent(hEvent);
+		SleepEx(100,TRUE);
+		clntAddrSz=sizeof(clntAddr);
+		clntSock=accept(servSock,(SOCKADDR*)&clntAddr,&clntAddrSz);
+		if(clntSock==INVALID_SOCKET)
+		{
+			if(GetLastError()==WSAEWOULDBLOCK)
+				continue;
+			else
+				ErrorHandler("accept error");
+		}		puts("client connected...");		memset(&ovLap,0,sizeof(WSAOVERLAPPED));
+		ioData.hClntSock=clntSock;
+		(ioData.wsaBuf).buf=ioData.buf;
+		(ioData.wsaBuf).len=BUF_SIZE;		ovLap.hEvent=(HANDLE)(&ioData);				puts("begin WSARecv...");		WSARecv(clntSock,&(ioData.wsaBuf),1,&recvBytes,&flagInfo,&ovLap,ReadCompletionRoutine);	}
 	closesocket(servSock);
-	closesocket(clntSock);
 	WSACleanup();
 	return 0;
 }
 
-void CALLBACK CompletionRoutine(DWORD dwError,DWORD szRecvBytes,LPWSAOVERLAPPED lpOverlapped,DWORD flags)
+void CALLBACK WriteCompletionRoutine(DWORD dwError,DWORD szSendBytes,LPWSAOVERLAPPED lpOverlapped,DWORD flags)
 {
-	if(dwError!=0)
+	puts("entry WriteCompletionRoutine...");
+	DWORD recvByte;
+	DWORD flagInfo=0;
+	puts("entry WriteCompletionRoutine...");
+	if(dwError!=NULL)
+		ErrorHandler("ReadCompletionRoutine error");
+	LPIO_DATA lpioData=(LPIO_DATA)lpOverlapped->hEvent;
+	SOCKET clntSock=lpioData->hClntSock;
+	LPWSABUF lpwsaBuf=&(lpioData->wsaBuf);
+	lpwsaBuf->len=BUF_SIZE;
+	
+	WSARecv(clntSock,lpwsaBuf,1,&recvByte,&flagInfo,lpOverlapped,ReadCompletionRoutine);
+	
+}
+
+void CALLBACK ReadCompletionRoutine(DWORD dwError,DWORD szRecvBytes,LPWSAOVERLAPPED lpOverlapped,DWORD flags)
+{
+	puts("entry ReadCompletionRoutine...");
+	if(dwError!=NULL)
+		ErrorHandler("ReadCompletionRoutine error");
+	LPIO_DATA lpioData=(LPIO_DATA)lpOverlapped->hEvent;
+	SOCKET clntSock=lpioData->hClntSock;
+	LPWSABUF lpwsaBuf=&(lpioData->wsaBuf);
+	DWORD sendBytes;
+	if(szRecvBytes==0)
 	{
-		ErrorHandler("CompletionRoutine Error");
+		closesocket(clntSock);
+		free(lpioData);
+		free(lpOverlapped);
 	}
 	else
 	{
-		recvBytes=szRecvBytes;
-		printf("Recieve Message:%s\n",buf);
+		lpwsaBuf->len=szRecvBytes;
+		WSASend(clntSock,lpwsaBuf,1,&sendBytes,0,lpOverlapped,WriteCompletionRoutine);
 	}
 }
 
-void ErrorHandler(const char* message)
+void ErrorHandler(char* message)
 {
 	fputs(message,stderr);
 	fputc('/n',stderr);
