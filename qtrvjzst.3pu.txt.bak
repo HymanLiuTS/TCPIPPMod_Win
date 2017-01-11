@@ -1,0 +1,45 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   CAsyncSocktServ_Clnt/CAsysnSocktServ_Clnt.sln
+#	new file:   CAsyncSocktServ_Clnt/CAsysnSocktServ_Clnt.suo
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.aps
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.cpp
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.h
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.rc
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.vcxproj
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.vcxproj.filters
+#	new file:   CAsyncSocktServ_Clnt/Clnt/Clnt.vcxproj.user
+#	new file:   CAsyncSocktServ_Clnt/Clnt/ClntDlg.cpp
+#	new file:   CAsyncSocktServ_Clnt/Clnt/ClntDlg.h
+#	new file:   CAsyncSocktServ_Clnt/Clnt/ReadMe.txt
+#	new file:   CAsyncSocktServ_Clnt/Clnt/res/Clnt.ico
+#	new file:   CAsyncSocktServ_Clnt/Clnt/res/Clnt.rc2
+#	new file:   CAsyncSocktServ_Clnt/Clnt/resource.h
+#	new file:   CAsyncSocktServ_Clnt/Clnt/stdafx.cpp
+#	new file:   CAsyncSocktServ_Clnt/Clnt/stdafx.h
+#	new file:   CAsyncSocktServ_Clnt/Clnt/targetver.h
+#	new file:   CAsyncSocktServ_Clnt/Serv/MySocket.cpp
+#	new file:   CAsyncSocktServ_Clnt/Serv/MySocket.h
+#	new file:   CAsyncSocktServ_Clnt/Serv/ReadMe.txt
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.aps
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.cpp
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.h
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.rc
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.vcxproj
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.vcxproj.filters
+#	new file:   CAsyncSocktServ_Clnt/Serv/Serv.vcxproj.user
+#	new file:   CAsyncSocktServ_Clnt/Serv/ServDlg.cpp
+#	new file:   CAsyncSocktServ_Clnt/Serv/ServDlg.h
+#	new file:   CAsyncSocktServ_Clnt/Serv/res/Serv.ico
+#	new file:   CAsyncSocktServ_Clnt/Serv/res/Serv.rc2
+#	new file:   CAsyncSocktServ_Clnt/Serv/resource.h
+#	new file:   CAsyncSocktServ_Clnt/Serv/stdafx.cpp
+#	new file:   CAsyncSocktServ_Clnt/Serv/stdafx.h
+#	new file:   CAsyncSocktServ_Clnt/Serv/targetver.h
+#
+
